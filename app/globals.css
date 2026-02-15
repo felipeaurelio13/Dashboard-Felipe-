@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light dark; }
+body { @apply bg-slate-950 text-slate-100; }
+input, textarea, select, button { font-size: 16px; }
+.card { @apply bg-slate-900 border border-slate-800 rounded-xl p-4; }
+.field { @apply w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-3 min-h-12; }
+.btn { @apply min-h-12 px-4 rounded-lg font-medium; }
+.btn-primary { @apply btn bg-sky-600 text-white; }
+.btn-secondary { @apply btn bg-slate-800 text-slate-100; }
+.status-dot { @apply inline-block h-2.5 w-2.5 rounded-full; }

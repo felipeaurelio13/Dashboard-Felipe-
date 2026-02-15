@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model DailyEntry {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  date           DateTime @db.Date
+  cashToday      Decimal? @map("cash_today") @db.Decimal(14, 2)
+  cash30d        Decimal? @map("cash_30d") @db.Decimal(14, 2)
+  criticalAR     String?  @map("critical_ar")
+  blockers       String[] @default([])
+  risks          String[] @default([])
+  decisions      String[] @default([])
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, date])
+  @@map("daily_entries")
+}
+
+model WeeklyMetric {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  weekStart  DateTime @map("week_start") @db.Date
+  key        String
+  actual     Decimal? @db.Decimal(14, 2)
+  plan       Decimal? @db.Decimal(14, 2)
+  note       String?
+  isLocked   Boolean  @default(false) @map("is_locked")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, weekStart, key])
+  @@map("weekly_metrics")
+}
+
+model CloseTask {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  monthKey     String   @map("month_key")
+  taskKey      String   @map("task_key")
+  owner        String?
+  dueDate      DateTime? @map("due_date") @db.Date
+  status       String   @default("todo")
+  evidenceLink String?  @map("evidence_link")
+  notes        String?
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  @@unique([userId, monthKey, taskKey])
+  @@map("close_tasks")
+}
+
+model DecisionLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  date      DateTime @db.Date
+  decision  String
+  context   String?
+  options   String?
+  owner     String?
+  dueDate   DateTime? @map("due_date") @db.Date
+  status    String   @default("open")
+  link      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  @@map("decision_logs")
+}
+
+model RiskLog {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  date        DateTime @db.Date
+  risk        String
+  category    String?
+  impact      Int
+  probability Int
+  mitigation  String?
+  owner       String?
+  reviewDate  DateTime? @map("review_date") @db.Date
+  status      String   @default("open")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  @@map("risk_logs")
+}
+
+model UserSetting {
+  id                      String   @id @default(uuid()) @db.Uuid
+  userId                  String   @unique @map("user_id") @db.Uuid
+  varianceGreenPct        Int      @default(5) @map("variance_green_pct")
+  varianceYellowPct       Int      @default(10) @map("variance_yellow_pct")
+  cashWarningThreshold    Decimal  @default(0) @map("cash_warning_threshold") @db.Decimal(14,2)
+  defaultCurrency         String   @default("CLP") @map("default_currency")
+  reminderDaily           Boolean  @default(false) @map("reminder_daily")
+  reminderWeekly          Boolean  @default(false) @map("reminder_weekly")
+  createdAt               DateTime @default(now()) @map("created_at")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+  @@map("user_settings")
+}
