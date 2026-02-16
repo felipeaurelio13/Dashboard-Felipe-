@@ -1,8 +1,9 @@
 import { getGitHubPagesBasePath } from './lib/github-pages.mjs';
 
 const basePath = getGitHubPagesBasePath({
-  isGithubActions: process.env.GITHUB_ACTIONS === 'true',
-  repository: process.env.GITHUB_REPOSITORY
+  isGithubPagesBuild: process.env.GITHUB_ACTIONS === 'true' || process.env.NODE_ENV === 'production',
+  repository: process.env.GITHUB_REPOSITORY,
+  fallbackRepositoryName: process.env.GITHUB_REPOSITORY_NAME
 });
 
 /** @type {import('next').NextConfig} */
