@@ -2,9 +2,10 @@ import { test, expect } from '@playwright/test';
 
 test('navega módulos críticos', async ({ page }) => {
   await page.goto('/today');
-  await expect(page.getByText('Hoy · Semáforo 10')).toBeVisible();
+  await expect(page.getByText('Hoy · Panel ejecutivo')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Saltar al contenido' })).toBeVisible();
 
+  await expect(page.getByText('Resumen automático')).toBeVisible();
   await expect(page.getByLabel('Caja hoy')).toBeVisible();
 
   await page.goto('/week');
