@@ -66,7 +66,7 @@ El repo ya queda listo para desplegar estático en Pages:
 - [x] Tests unitarios + e2e base.
 - [x] Empty states útiles (sin pantallas vacías).
 
-## Mejoras UX/UI (v0.5.0)
+## Mejoras UX/UI (v0.5.1)
 Se aplicaron 5 mejoras enfocadas en mobile-first y usabilidad profesional:
 
 1. **Layout más cómodo en móvil**: contenido centrado en `max-w-md`, espacio inferior para no tapar acciones con la bottom nav y acceso rápido con "Saltar al contenido".
@@ -77,5 +77,9 @@ Se aplicaron 5 mejoras enfocadas en mobile-first y usabilidad profesional:
 6. **Resumen ejecutivo automático en Hoy**: se prioriza claridad para CEO con estado de salud, cobertura de caja, bloqueos y score de ejecución en tiempo real para decidir con rapidez.
 7. **Inputs de datos más usables en módulo Hoy**: montos con ayuda visual en CLP, soporte de separadores locales (`1.500.000` / `1200,5`), listas con salto de línea o coma, y campos amplios tipo textarea para reducir errores de captura en móvil.
 
-Además, el footer muestra la versión actual `v0.5.0`.
+Además, el footer muestra la versión actual `v0.5.1`.
 
+## Fix de carga/ingreso de datos (v0.5.1)
+- Se corrige el flujo de `Hoy` para evitar sobrescribir lo que el usuario está escribiendo cuando termina la carga inicial.
+- Se agrega manejo explícito de sesión para mostrar mensajes claros cuando falta autenticación y evitar errores de carga poco accionables.
+- Se añade cobertura E2E para validar que el usuario puede ingresar datos y recibe feedback útil si no ha iniciado sesión.
