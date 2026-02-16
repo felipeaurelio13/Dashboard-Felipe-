@@ -15,7 +15,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es">
       <body>
         <Providers>
-          <main className="p-3 space-y-3">{children}</main>
+          <a href="#main-content" className="skip-link">Saltar al contenido</a>
+          <main id="main-content" className="mx-auto w-full max-w-md space-y-3 px-3 pb-28 pt-4">{children}</main>
           <AppFooter />
           <BottomNav />
         </Providers>

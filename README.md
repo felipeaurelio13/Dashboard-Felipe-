@@ -63,3 +63,15 @@ El repo ya queda listo para desplegar estático en Pages:
 - [x] RLS por usuario en todas las tablas.
 - [x] Tests unitarios + e2e base.
 - [x] Empty states útiles (sin pantallas vacías).
+
+## Mejoras UX/UI (v0.3.0)
+Se aplicaron 5 mejoras enfocadas en mobile-first y usabilidad profesional:
+
+1. **Layout más cómodo en móvil**: contenido centrado en `max-w-md`, espacio inferior para no tapar acciones con la bottom nav y acceso rápido con "Saltar al contenido".
+2. **Navegación inferior más clara**: estado activo con `aria-current`, mejor contraste y área táctil amplia para pulgar.
+3. **Formularios del módulo Hoy más guiados**: labels visibles, placeholders más empáticos, feedback de guardado en lenguaje claro.
+4. **Scoreboard semanal legible**: nombres de métricas en español, campos Actual/Plan etiquetados y explicación rápida de semáforo.
+5. **Ajustes más entendibles**: textos descriptivos para umbrales, recordatorios diario/semanal separados y mensajes de estado accesibles.
+
+Además, el footer muestra la versión actual `v0.3.0`.
+

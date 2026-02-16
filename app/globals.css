@@ -2,12 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: light dark; }
-body { @apply bg-slate-950 text-slate-100; }
-input, textarea, select, button { font-size: 16px; }
-.card { @apply bg-slate-900 border border-slate-800 rounded-xl p-4; }
-.field { @apply w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-3 min-h-12; }
-.btn { @apply min-h-12 px-4 rounded-lg font-medium; }
-.btn-primary { @apply btn bg-sky-600 text-white; }
-.btn-secondary { @apply btn bg-slate-800 text-slate-100; }
-.status-dot { @apply inline-block h-2.5 w-2.5 rounded-full; }
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-slate-950 text-slate-100 antialiased;
+}
+
+input,
+textarea,
+select,
+button {
+  font-size: 16px;
+}
+
+*:focus-visible {
+  @apply outline-none ring-2 ring-sky-400 ring-offset-2 ring-offset-slate-950;
+}
+
+.card {
+  @apply rounded-xl border border-slate-800 bg-slate-900 p-4;
+}
+
+.field {
+  @apply min-h-12 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-3 text-slate-100 placeholder:text-slate-500;
+}
+
+.label {
+  @apply text-xs font-medium uppercase tracking-wide text-slate-300;
+}
+
+.btn {
+  @apply min-h-12 rounded-lg px-4 font-medium;
+}
+
+.btn-primary {
+  @apply btn bg-sky-600 text-white transition hover:bg-sky-500;
+}
+
+.btn-secondary {
+  @apply btn bg-slate-800 text-slate-100;
+}
+
+.status-dot {
+  @apply inline-block h-2.5 w-2.5 rounded-full;
+}
+
+.skip-link {
+  @apply absolute left-3 top-2 -translate-y-12 rounded-md bg-sky-500 px-3 py-2 text-sm font-medium text-white transition;
+}
+
+.skip-link:focus {
+  @apply translate-y-0;
+}
