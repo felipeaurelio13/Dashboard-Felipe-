@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { dailySchema } from '@/lib/schemas';
 import { enqueue } from '@/lib/outbox';
@@ -12,10 +12,35 @@ export default function TodayPage() {
   const today = new Date().toISOString().slice(0, 10);
   const [form, setForm] = useState({ date: today, cash_today: '0', cash_30d: '0', critical_ar: '', blockers: '', risks: '', decisions: '' });
   const [status, setStatus] = useState(INITIAL_STATUS);
+  const hasEditedRef = useRef(false);
+
+  const updateForm = (field: keyof typeof form, value: string) => {
+    hasEditedRef.current = true;
+    setForm((previous) => ({ ...previous, [field]: value }));
+  };
 
   useEffect(() => {
-    supabase.from('daily_entries').select('*').eq('date', today).limit(1).then(({ data }) => {
-      if (data?.[0]) {
+    const load = async () => {
+      const { data: sessionData } = await supabase.auth.getUser();
+      const user = sessionData.user;
+      if (!user) {
+        setStatus('Inicia sesión para cargar y guardar datos diarios en tu cuenta.');
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('daily_entries')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('date', today)
+        .limit(1);
+
+      if (error) {
+        setStatus('No pudimos cargar tu reporte de hoy. Puedes ingresar datos y reintentar guardar.');
+        return;
+      }
+
+      if (data?.[0] && !hasEditedRef.current) {
         const d = data[0];
         setForm({
           date: today,
@@ -27,7 +52,9 @@ export default function TodayPage() {
           decisions: (d.decisions ?? []).join('\n')
         });
       }
-    });
+    };
+
+    void load();
   }, [today]);
 
   const cashToday = parseAmountInput(form.cash_today);
@@ -60,7 +87,13 @@ export default function TodayPage() {
 
     setStatus('Guardando reporte diario...');
 
-    const payload = parsed.data;
+    const { data: sessionData } = await supabase.auth.getUser();
+    const user = sessionData.user;
+    if (!user) {
+      return setStatus('Necesitas iniciar sesión para guardar tus datos. Ve a /auth y vuelve a intentar.');
+    }
+
+    const payload = { ...parsed.data, user_id: user.id };
     if (!navigator.onLine) {
       await enqueue({ id: crypto.randomUUID(), table: 'daily_entries', action: 'upsert', payload, retries: 0, createdAt: Date.now() });
       return setStatus('Sin internet: reporte guardado en cola para sincronizar automáticamente.');
@@ -105,7 +138,7 @@ export default function TodayPage() {
             enterKeyHint="next"
             autoComplete="off"
             value={form.cash_today}
-            onChange={(e) => setForm({ ...form, cash_today: e.target.value })}
+            onChange={(e) => updateForm('cash_today', e.target.value)}
             placeholder="Ej: 1.500.000"
             aria-describedby="cash-today-help"
           />
@@ -120,7 +153,7 @@ export default function TodayPage() {
             enterKeyHint="next"
             autoComplete="off"
             value={form.cash_30d}
-            onChange={(e) => setForm({ ...form, cash_30d: e.target.value })}
+            onChange={(e) => updateForm('cash_30d', e.target.value)}
             placeholder="Ej: 5.200.000"
             aria-describedby="cash-30d-help"
           />
@@ -128,7 +161,7 @@ export default function TodayPage() {
         </label>
         <label className="space-y-1">
           <span className="label">Cobros críticos</span>
-          <textarea className="field min-h-20" value={form.critical_ar} onChange={(e) => setForm({ ...form, critical_ar: e.target.value })} placeholder="Cliente A — lunes\nCliente B — jueves" />
+          <textarea className="field min-h-20" value={form.critical_ar} onChange={(e) => updateForm('critical_ar', e.target.value)} placeholder="Cliente A — lunes\nCliente B — jueves" />
           <p className="text-xs text-slate-400">Usa una línea por cobro para facilitar lectura del equipo ejecutivo.</p>
         </label>
       </div>
@@ -136,17 +169,17 @@ export default function TodayPage() {
       <div className="card space-y-3">
         <label className="space-y-1">
           <span className="label">Bloqueos activos</span>
-          <textarea className="field min-h-20" value={form.blockers} onChange={(e) => setForm({ ...form, blockers: e.target.value })} placeholder="Escribe uno por línea o separado por coma" />
+          <textarea className="field min-h-20" value={form.blockers} onChange={(e) => updateForm('blockers', e.target.value)} placeholder="Escribe uno por línea o separado por coma" />
           <p className="text-xs text-slate-400">Detectados: {blockers.length}.</p>
         </label>
         <label className="space-y-1">
           <span className="label">Riesgos activos</span>
-          <textarea className="field min-h-20" value={form.risks} onChange={(e) => setForm({ ...form, risks: e.target.value })} placeholder="Escribe uno por línea o separado por coma" />
+          <textarea className="field min-h-20" value={form.risks} onChange={(e) => updateForm('risks', e.target.value)} placeholder="Escribe uno por línea o separado por coma" />
           <p className="text-xs text-slate-400">Detectados: {risks.length}.</p>
         </label>
         <label className="space-y-1">
           <span className="label">Decisiones tomadas hoy</span>
-          <textarea className="field min-h-20" value={form.decisions} onChange={(e) => setForm({ ...form, decisions: e.target.value })} placeholder="Escribe una decisión por línea o separado por coma" />
+          <textarea className="field min-h-20" value={form.decisions} onChange={(e) => updateForm('decisions', e.target.value)} placeholder="Escribe una decisión por línea o separado por coma" />
           <p className="text-xs text-slate-400">Registradas: {decisions.length}.</p>
         </label>
       </div>

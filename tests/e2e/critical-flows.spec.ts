@@ -23,3 +23,14 @@ test('navega módulos críticos', async ({ page }) => {
   await expect(page.getByLabel('Moneda por defecto')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Ajustes' })).toHaveAttribute('aria-current', 'page');
 });
+
+test('en today permite editar y muestra estado claro cuando falta sesión', async ({ page }) => {
+  await page.goto('/today');
+
+  const cashToday = page.getByLabel('Caja hoy');
+  await cashToday.fill('1.500.000');
+  await expect(cashToday).toHaveValue('1.500.000');
+
+  await page.getByRole('button', { name: 'Registrar reporte diario' }).click();
+  await expect(page.getByText('Necesitas iniciar sesión para guardar tus datos. Ve a /auth y vuelve a intentar.')).toBeVisible();
+});
