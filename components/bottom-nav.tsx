@@ -13,18 +13,22 @@ const tabs = [
 export function BottomNav() {
   const pathname = usePathname();
   return (
-    <nav className="fixed bottom-0 left-0 right-0 mx-auto max-w-md border-t border-slate-800 bg-slate-900">
+    <nav aria-label="Navegación principal" className="fixed bottom-0 left-0 right-0 z-40 mx-auto w-full max-w-md border-t border-slate-800/90 bg-slate-950/95 backdrop-blur">
       <ul className="grid grid-cols-5">
-        {tabs.map((tab) => (
-          <li key={tab.href}>
-            <Link
-              className={`block text-center py-4 min-h-12 ${pathname === tab.href ? 'text-sky-400' : 'text-slate-300'}`}
-              href={tab.href}
-            >
-              {tab.label}
-            </Link>
-          </li>
-        ))}
+        {tabs.map((tab) => {
+          const isActive = pathname === tab.href;
+          return (
+            <li key={tab.href}>
+              <Link
+                aria-current={isActive ? 'page' : undefined}
+                className={`flex min-h-14 items-center justify-center text-center text-xs font-medium transition ${isActive ? 'text-sky-300' : 'text-slate-300 hover:text-sky-100'}`}
+                href={tab.href}
+              >
+                {tab.label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );
