@@ -49,6 +49,8 @@ El repo ya queda listo para desplegar estático en Pages:
 3. Hacer push a `main`. El workflow `.github/workflows/deploy-pages.yml` compila y publica `out/` automáticamente.
 4. Para repositorios de proyecto (`owner/repo`), el build setea `basePath` automáticamente para servir desde `/<repo>`.
 
+5. Si ya tienes GitHub Pages configurado desde `main`, no necesitas cambios adicionales: el workflow detecta contexto de Pages y también soporta fallback con `GITHUB_REPOSITORY_NAME` para resolver `basePath` en export estático.
+
 > Nota: para usar route handlers server-side, recomienda Vercel/Fly. Para Pages, prioriza flujo client-side con Supabase directo (ya soportado en este repo).
 
 ## Seed opcional (no automático)
@@ -64,7 +66,7 @@ El repo ya queda listo para desplegar estático en Pages:
 - [x] Tests unitarios + e2e base.
 - [x] Empty states útiles (sin pantallas vacías).
 
-## Mejoras UX/UI (v0.3.0)
+## Mejoras UX/UI (v0.3.1)
 Se aplicaron 5 mejoras enfocadas en mobile-first y usabilidad profesional:
 
 1. **Layout más cómodo en móvil**: contenido centrado en `max-w-md`, espacio inferior para no tapar acciones con la bottom nav y acceso rápido con "Saltar al contenido".
@@ -73,5 +75,5 @@ Se aplicaron 5 mejoras enfocadas en mobile-first y usabilidad profesional:
 4. **Scoreboard semanal legible**: nombres de métricas en español, campos Actual/Plan etiquetados y explicación rápida de semáforo.
 5. **Ajustes más entendibles**: textos descriptivos para umbrales, recordatorios diario/semanal separados y mensajes de estado accesibles.
 
-Además, el footer muestra la versión actual `v0.3.0`.
+Además, el footer muestra la versión actual `v0.3.1`.
 
