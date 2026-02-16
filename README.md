@@ -39,9 +39,15 @@ Sistema de gestión semanal/mensual para reemplazar planillas, con foco en **cer
 - Instalable en móvil (standalone).
 
 ## Deploy en GitHub Pages
-1. Configurar Action para build/export de Next.js estático si no usas route handlers.
-2. Mantener secrets en GitHub (Supabase y Sentry).
-3. Publicar carpeta `out/` en rama `gh-pages`.
+El repo ya queda listo para desplegar estático en Pages:
+
+1. Ir a **Settings → Pages** y seleccionar **Source: GitHub Actions**.
+2. Agregar estos secrets en el repositorio:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `NEXT_PUBLIC_SENTRY_DSN` (opcional)
+3. Hacer push a `main`. El workflow `.github/workflows/deploy-pages.yml` compila y publica `out/` automáticamente.
+4. Para repositorios de proyecto (`owner/repo`), el build setea `basePath` automáticamente para servir desde `/<repo>`.
 
 > Nota: para usar route handlers server-side, recomienda Vercel/Fly. Para Pages, prioriza flujo client-side con Supabase directo (ya soportado en este repo).
 
