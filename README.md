@@ -66,7 +66,7 @@ El repo ya queda listo para desplegar estático en Pages:
 - [x] Tests unitarios + e2e base.
 - [x] Empty states útiles (sin pantallas vacías).
 
-## Mejoras UX/UI (v0.4.0)
+## Mejoras UX/UI (v0.5.0)
 Se aplicaron 5 mejoras enfocadas en mobile-first y usabilidad profesional:
 
 1. **Layout más cómodo en móvil**: contenido centrado en `max-w-md`, espacio inferior para no tapar acciones con la bottom nav y acceso rápido con "Saltar al contenido".
@@ -75,6 +75,7 @@ Se aplicaron 5 mejoras enfocadas en mobile-first y usabilidad profesional:
 4. **Scoreboard semanal legible**: nombres de métricas en español, campos Actual/Plan etiquetados y explicación rápida de semáforo.
 5. **Ajustes más entendibles**: textos descriptivos para umbrales, recordatorios diario/semanal separados y mensajes de estado accesibles.
 6. **Resumen ejecutivo automático en Hoy**: se prioriza claridad para CEO con estado de salud, cobertura de caja, bloqueos y score de ejecución en tiempo real para decidir con rapidez.
+7. **Inputs de datos más usables en módulo Hoy**: montos con ayuda visual en CLP, soporte de separadores locales (`1.500.000` / `1200,5`), listas con salto de línea o coma, y campos amplios tipo textarea para reducir errores de captura en móvil.
 
-Además, el footer muestra la versión actual `v0.4.0`.
+Además, el footer muestra la versión actual `v0.5.0`.
 
